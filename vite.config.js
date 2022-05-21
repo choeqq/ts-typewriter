@@ -1,4 +1,4 @@
-// vite.config.ts
+// vite.config.js
 import checker from "vite-plugin-checker";
 
 export default {
