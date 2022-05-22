@@ -34,6 +34,21 @@ export default class Typewriter {
   }
 
   deleteChars(number: number) {
+    this.addToQueue((resolve) => {
+      let i = 0;
+      const interval = setInterval(() => {
+        this.element.innerText = this.element.innerText?.substring(
+          0,
+          this.element.innerText.length - 1
+        );
+        i++;
+        if (i >= number) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, this.deletingSpeed);
+    });
+
     return this;
   }
 
