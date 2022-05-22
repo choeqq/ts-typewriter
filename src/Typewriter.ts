@@ -1,11 +1,11 @@
 type QueueItem = () => Promise<void>;
 
 export default class Typewriter {
-  #queue: QueueItem[] = [];
-  element: HTMLElement;
-  loop: boolean;
-  typingSpeed: number;
-  deletingSpeed: number;
+  private queue: QueueItem[] = [];
+  private element: HTMLElement;
+  private loop: boolean;
+  private typingSpeed: number;
+  private deletingSpeed: number;
 
   constructor(
     parent: HTMLElement,
@@ -78,17 +78,17 @@ export default class Typewriter {
   }
 
   async start() {
-    let cb = this.#queue.shift();
+    let cb = this.queue.shift();
     while (cb) {
       await cb();
-      if (this.loop) this.#queue.push(cb);
-      cb = this.#queue.shift();
+      if (this.loop) this.queue.push(cb);
+      cb = this.queue.shift();
     }
 
     return this;
   }
 
   private addToQueue(cb: (resolve: () => void) => void) {
-    this.#queue.push(() => new Promise(cb));
+    this.queue.push(() => new Promise(cb));
   }
 }
