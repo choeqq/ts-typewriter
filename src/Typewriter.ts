@@ -19,18 +19,16 @@ export default class Typewriter {
   }
 
   typeString(string: string) {
-    this.#queue.push(() => {
-      return new Promise((resolve, reject) => {
-        let i = 0;
-        const interval = setInterval(() => {
-          this.element.append(string[i]);
-          i++;
-          if (i >= string.length) {
-            clearInterval(interval);
-            resolve();
-          }
-        }, this.typingSpeed);
-      });
+    this.addToQueue((resolve) => {
+      let i = 0;
+      const interval = setInterval(() => {
+        this.element.append(string[i]);
+        i++;
+        if (i >= string.length) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, this.typingSpeed);
     });
     return this;
   }
@@ -52,5 +50,9 @@ export default class Typewriter {
       await cb();
     }
     return this;
+  }
+
+  private addToQueue(cb: (resolve: () => void) => void) {
+    this.#queue.push(() => new Promise(cb));
   }
 }
