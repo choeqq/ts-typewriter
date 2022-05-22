@@ -70,6 +70,10 @@ export default class Typewriter {
   }
 
   pauseFor(duration: number) {
+    this.addToQueue((resolve) => {
+      setTimeout(resolve, duration);
+    });
+
     return this;
   }
 
