@@ -78,9 +78,13 @@ export default class Typewriter {
   }
 
   async start() {
-    for (let cb of this.#queue) {
+    let cb = this.#queue.shift();
+    while (cb) {
       await cb();
+      if (this.loop) this.#queue.push(cb);
+      cb = this.#queue.shift();
     }
+
     return this;
   }
 
