@@ -53,6 +53,19 @@ export default class Typewriter {
   }
 
   deleteAll(deleteSpeed = this.deletingSpeed) {
+    this.addToQueue((resolve) => {
+      const interval = setInterval(() => {
+        this.element.innerText = this.element.innerText?.substring(
+          0,
+          this.element.innerText.length - 1
+        );
+        if (this.element.innerText.length === 0) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, deleteSpeed);
+    });
+
     return this;
   }
 
